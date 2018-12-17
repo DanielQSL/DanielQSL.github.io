@@ -76,22 +76,16 @@ tags:
 
 ## 五、更换主题
 
-如果你不喜欢Hexo默认的主题，[官方](https://hexo.io/themes/)提供了不同的主题供大家选择，我这边选择的是[NexT](https://github.com/theme-next/hexo-theme-next)主题，现在就使用该主题来演示如何更换主题，首先，在官网中找到NexT主题，点击会跳转到GitHub的仓库中，复制该git地址；然后在本地blog目录中，打开命令行（位置处于该blog目录下面）输入：
+如果你不喜欢Hexo默认的主题，官方提供了不同的主题供大家选择，我这边选择的是NexT主题，现在就使用该主题来演示如何更换主题，在blog目录中，打卡命令行（位置处于该blog目录下面）输入：
 
 ```
 git clone https://github.com/theme-next/hexo-theme-next.git themes/next
 ```
 
-此命令的作用是将NexT主题源代码下载到，blog目录下的next文件夹中。然后打开项目的_config.yml配置文件，修改配置文件中的主题为next（这里的名字是你themes文件下对应的主题的名字）：
+此命令的作用是将NexT主题下载到，blog目录下的next文件夹中。然后打开项目的_config.yml配置文件，修改配置文件中的主题为next（这里的名字是你themes文件下对应的主题的名字）：
 
 ![Imgur](https://i.imgur.com/fKUeSeD.png)
 
 
 
 NexT主题简洁、舒服，并且有丰富的扩展性，具体的玩法，可自行上网搜索。
-
-
-
-## 总结
-
-建立博客的初心是想让自己对学习各知识的总结，其次锻炼自己的写作表达能力，希望自己可以不断提升，成长。
