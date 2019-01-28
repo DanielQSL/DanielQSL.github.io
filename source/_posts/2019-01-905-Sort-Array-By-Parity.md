@@ -6,7 +6,6 @@ categories:
 - 数组
 tags: 
 - Leetcode
-- 算法
 - 数组
 ---
 
@@ -37,7 +36,7 @@ The outputs [4,2,3,1], [2,4,1,3], and [4,2,1,3] would also be accepted.
 
 
 
-## 解题思路一
+## 思路一
 
 定义一个新数组，偶数放在新数组的前面，奇数放在新数组的最后。
 
@@ -59,7 +58,7 @@ public int[] sortArrayByParity(int[] A) {
 
 
 
-## 解题思路二
+## 思路二
 
 第一种思路很简单使用了新数组，这里说下第二种，在不使用新数组，就地操作（in-place），也称为原位操作。
 
