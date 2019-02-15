@@ -25,5 +25,3 @@ comments: false
 Email: qiansl0316@gmail.com
 
 GitHub: https://github.com/DanielQSL
-
-一个不断努力的阳光少年
