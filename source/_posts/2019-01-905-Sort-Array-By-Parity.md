@@ -3,10 +3,10 @@ title: 905.Sort Array By Parity 按奇偶校验排序数组
 date: 2019-01-06 17:52:11
 categories: 
 - Leetcode
-- 数组
+- Array
 tags: 
 - Leetcode
-- 数组
+- Array
 ---
 
 ## 题目描述

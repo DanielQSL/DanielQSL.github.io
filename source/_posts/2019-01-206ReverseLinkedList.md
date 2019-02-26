@@ -3,10 +3,10 @@ title: 206.Reverse Linked List
 date: 2019-01-28 16:55:53
 categories: 
 - Leetcode
-- 链表
+- Linked List
 tags: 
 - Leetcode
-- 链表
+- Linked List
 ---
 
 ## 题目描述

@@ -3,10 +3,10 @@ title: 92.Reverse Linked List II
 date: 2019-01-28 18:08:40
 categories: 
 - Leetcode
-- 链表
+- Linked List
 tags: 
 - Leetcode
-- 链表
+- Linked List
 ---
 
 ## 题目描述
