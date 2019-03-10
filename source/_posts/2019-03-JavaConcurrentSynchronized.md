@@ -34,7 +34,7 @@ PS:1）同步代码块是使用`monitorenter`和`monitorexit`指令来实现的�
 
 Java对象头中的信息：
 
-1. Mark Word。存储对象的hashcode、分代年龄和锁标记位。
+1. Mark Word。存储对象的hashcode、分代年龄、锁类型和锁标记位。
 2. Class Metadata Address。存储到对象类型数据的指针。
 3. Array Length。数组的长度（如果当前对象是数组）
 
@@ -59,6 +59,10 @@ Java 对象头一般占有两个机器码（在 32 位虚拟机中，1 个机器
 ![Imgur](https://i.imgur.com/efQh3xN.png)
 
 
+
+# 3 Monitor
+
+每个Java对象天生自带一把看不见的锁。
 
 
 
