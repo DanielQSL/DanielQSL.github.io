@@ -2,9 +2,9 @@
 title: 理解synchronized的实现原理
 date: 2019-01-26 15:14:46
 categories: 
-- JVM并发
+- Java并发
 tags:
-- JVM并发
+- Java并发
 - synchronized
 ---
 
