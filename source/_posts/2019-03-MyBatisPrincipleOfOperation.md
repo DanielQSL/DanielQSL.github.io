@@ -24,7 +24,7 @@ tags:
 
 先给大家看看我的实体类:
 
-```
+```java
 /**
  * 图书实体
  */
@@ -44,7 +44,7 @@ public class Book {
 
 #### 1.1 配置文件mybatis-config.xml
 
-```
+```xml-dtd
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
@@ -71,7 +71,7 @@ public class Book {
 
 #### 1.2 BookMapper.xml
 
-```
+```xml-dtd
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -92,7 +92,7 @@ public class Book {
 
 MyBatis 包含一个名叫 Resources 的工具类，它包含一些实用方法，可使从 classpath 或其他位置加载资源文件更加容易。
 
-```
+```java
 public class Main {
     public static void main(String[] args) throws IOException {
         // 创建一个book对象
@@ -130,7 +130,7 @@ public class Main {
 
 我们只看getResourceAsStream方法:
 
-```
+```java
 public static InputStream getResourceAsStream(String resource) throws IOException {
     return getResourceAsStream((ClassLoader)null, resource);
 }
@@ -138,7 +138,7 @@ public static InputStream getResourceAsStream(String resource) throws IOExceptio
 
 getResourceAsStream调用下面的方法：
 
-```
+```java
 public static InputStream getResourceAsStream(ClassLoader loader, String resource) throws IOException {
     InputStream in = classLoaderWrapper.getResourceAsStream(resource, loader);
     if (in == null) {
@@ -151,7 +151,7 @@ public static InputStream getResourceAsStream(ClassLoader loader, String resourc
 
 获取到自身的ClassLoader对象，然后交给ClassLoader(lang包下的)来加载:
 
-```
+```java
 InputStream getResourceAsStream(String resource, ClassLoader[] classLoader) {
     ClassLoader[] arr$ = classLoader;
     int len$ = classLoader.length;
@@ -175,14 +175,14 @@ InputStream getResourceAsStream(String resource, ClassLoader[] classLoader) {
 
 #### 2.2 new SqlSessionFactoryBuilder().build(inputStream);源码分析
 
-```
+```java
 public SqlSessionFactoryBuilder() {
 }
 ```
 
 所以`new SqlSessionFactoryBuilder()`只是创建一个对象实例,而没有对象返回(建造者模式)，对象的返回交给`build()`方法。
 
-```
+```java
 public SqlSessionFactory build(InputStream inputStream) {
     return this.build((InputStream)inputStream, (String)null, (Properties)null);
 }
@@ -190,7 +190,7 @@ public SqlSessionFactory build(InputStream inputStream) {
 
 这里要传入一个inputStream对象，就是将我们上一步获取到的InputStream对象传入。
 
-```
+```java
 public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
     SqlSessionFactory var5;
     try {
@@ -216,7 +216,7 @@ public SqlSessionFactory build(InputStream inputStream, String environment, Prop
 
 如何解析的就大概说下，通过`Document`对象来解析，然后返回`InputStream`对象，然后交给`XMLConfigBuilder`构造成`org.apache.ibatis.session.Configuration`对象，然后交给build()方法构造程SqlSessionFactory：
 
-```
+```java
 public SqlSessionFactory build(Configuration config) {
     return new DefaultSqlSessionFactory(config);
 }
@@ -229,7 +229,7 @@ public DefaultSqlSessionFactory(Configuration configuration) {
 
 > SqlSession 完全包含了面向数据库执行 SQL 命令所需的所有方法。你可以通过 SqlSession 实例来直接执行已映射的 SQL 语句。
 
-```
+```java
 public SqlSession openSession() {
     return this.openSessionFromDataSource(this.configuration.getDefaultExecutorType(), (TransactionIsolationLevel)null, false);
 }
@@ -242,7 +242,7 @@ public SqlSession openSession() {
 
 
 
-```
+```java
 private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
     Transaction tx = null;
 
@@ -276,7 +276,7 @@ private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionI
 
 > 在拿到SqlSession对象后，我们调用它的insert方法。
 
-```
+```java
 public int insert(String statement, Object parameter) {
     return this.update(statement, parameter);
 }
@@ -284,7 +284,7 @@ public int insert(String statement, Object parameter) {
 
 它调用了自身的update(statement, parameter)方法：
 
-```
+```java
 public int update(String statement, Object parameter) {
     int var4;
     try {
@@ -311,7 +311,7 @@ public int update(String statement, Object parameter) {
 
 然后调用BaseExecutor中的update方法：
 
-```
+```java
 public int update(MappedStatement ms, Object parameter) throws SQLException {
     ErrorContext.instance().resource(ms.getResource()).activity("executing an update").object(ms.getId());
     if (this.closed) {
@@ -326,7 +326,7 @@ public int update(MappedStatement ms, Object parameter) throws SQLException {
 
 doUpdate才是真正做执行操作的方法：
 
-```
+```java
 public int doUpdate(MappedStatement ms, Object parameter) throws SQLException {
     Statement stmt = null;
 
@@ -348,7 +348,7 @@ public int doUpdate(MappedStatement ms, Object parameter) throws SQLException {
 
 先来看看`prepareStatement`方法，看看mybatis是如何将sql拼接合成的：
 
-```
+```java
 private Statement prepareStatement(StatementHandler handler, Log statementLog) throws SQLException {
     Connection connection = this.getConnection(statementLog);
     // 准备Statement
@@ -361,7 +361,7 @@ private Statement prepareStatement(StatementHandler handler, Log statementLog) t
 
 来看看`parameterize`方法：
 
-```
+```java
 public void parameterize(Statement statement) throws SQLException {
     this.parameterHandler.setParameters((PreparedStatement)statement);
 }
@@ -372,7 +372,7 @@ public void parameterize(Statement statement) throws SQLException {
 
 从ParameterMapping中读取参数值和类型，然后设置到SQL语句中：
 
-```
+```java
 public void setParameters(PreparedStatement ps) {
     ErrorContext.instance().activity("setting parameters").object(this.mappedStatement.getParameterMap().getId());
     List<ParameterMapping> parameterMappings = this.boundSql.getParameterMappings();
@@ -417,7 +417,7 @@ public void setParameters(PreparedStatement ps) {
 
 > 在doUpdate方法中，解析生成完新的SQL后，然后执行var6 = handler.update(stmt);我们来看看它的源码。
 
-```
+```java
 public int update(Statement statement) throws SQLException {
     PreparedStatement ps = (PreparedStatement)statement;
      // 执行sql
@@ -439,7 +439,7 @@ public int update(Statement statement) throws SQLException {
 
 > 最后，来看看commit()方法的源码。
 
-```
+```java
 public void commit() {
     this.commit(false);
 }
@@ -447,7 +447,7 @@ public void commit() {
 
 调用其对象本身的commit()方法：
 
-```
+```java
 public void commit(boolean force) {
     try {
         // 是否提交（判断是提交还是回滚）
@@ -463,7 +463,7 @@ public void commit(boolean force) {
 
 如果dirty是false，则进行回滚；如果是true，则正常提交。
 
-```
+```java
 private boolean isCommitOrRollbackRequired(boolean force) {
     return !this.autoCommit && this.dirty || force;
 }
@@ -471,7 +471,7 @@ private boolean isCommitOrRollbackRequired(boolean force) {
 
 调用CachingExecutor的commit方法：
 
-```
+```java
 public void commit(boolean required) throws SQLException {
     this.delegate.commit(required);
     this.tcm.commit();
@@ -480,7 +480,7 @@ public void commit(boolean required) throws SQLException {
 
 调用BaseExecutor的commit方法：
 
-```
+```java
 public void commit(boolean required) throws SQLException {
     if (this.closed) {
         throw new ExecutorException("Cannot commit, transaction is already closed");
@@ -497,7 +497,7 @@ public void commit(boolean required) throws SQLException {
 
 最后调用JDBCTransaction的commit方法：
 
-```
+```java
 public void commit() throws SQLException {
     if (this.connection != null && !this.connection.getAutoCommit()) {
         if (log.isDebugEnabled()) {
