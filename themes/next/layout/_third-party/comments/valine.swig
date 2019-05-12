@@ -20,9 +20,17 @@
         appKey: '{{ theme.valine.appkey }}',
         placeholder: '{{ theme.valine.placeholder }}',
         avatar:'{{ theme.valine.avatar }}',
+		guest_info:['nick','mail'],  //评论者只需要提供评论的昵称即可
         meta:guest,
         pageSize:'{{ theme.valine.pageSize }}' || 10,
         visitor: {{ theme.valine.visitor }}
     });
+	//增加以下六行代码去除 power by valine
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
   </script>
 {% endif %}
