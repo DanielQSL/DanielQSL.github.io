@@ -22,7 +22,7 @@ tags:
 1. 在GitHub上新建一个仓库
 
 ​	仓库的名字的格式必须为：用户名.github.io（如下图）
-![Imgur](https://i.imgur.com/U84W6zN.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jalwifzdj30j50fcdi1.jpg)
 
 2. 完成以上步骤,我们就拥有了自己的代码仓库
 
@@ -50,14 +50,14 @@ tags:
 
 4. 这时我们就可以在浏览器的地址栏中输入http://localhost:4000/,我们会看到如下图
 
-![Imgur](https://i.imgur.com/IsGB0bK.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jamc24y4j30iz09dae4.jpg)
 
 
 
 # 四、上传代码至GitHub
 
 1. 首先打开项目配置文档_config.yml,对其进行如下图所示修改,此步骤目的是指定项目发布的仓库
-![Imgur](https://i.imgur.com/iWX6lda.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3janor6gcj30f0038mx1.jpg)
 
 ​      **注:**type,repository等属性冒号后面都必须有一个空格,再填入属性值,否则不会生效.
 
@@ -84,7 +84,7 @@ git clone https://github.com/theme-next/hexo-theme-next.git themes/next
 
 此命令的作用是将NexT主题下载到，blog目录下的next文件夹中。然后打开项目的_config.yml配置文件，修改配置文件中的主题为next（这里的名字是你themes文件下对应的主题的名字）：
 
-![Imgur](https://i.imgur.com/fKUeSeD.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jao2gv8vj308u02c0sj.jpg)
 
 
 

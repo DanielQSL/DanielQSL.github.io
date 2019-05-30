@@ -211,7 +211,7 @@ avatar:
   # in theme directory(source/images): /images/avatar.gif
   # in site  directory(source/uploads): /uploads/avatar.gif
   # You can also use other linking images.
-  url: https://i.imgur.com/fBmNiUj.jpg
+  url: http://ww1.sinaimg.cn/large/007P9bxgly1g3jb7lhscwj31070r1qm8.jpg
   # If true, the avatar would be dispalyed in circle.
   rounded: true
   # The value of opacity should be choose from 0 to 1 to set the opacity of the avatar.

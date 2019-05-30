@@ -17,7 +17,7 @@ Java 被设计成允许应用程序可以运行在任意的平台，而不需要
 
 
 
-![Imgur](https://i.imgur.com/rDaYKqh.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jarmvwwkj30m40f1qb9.jpg)
 
 
 
@@ -61,7 +61,7 @@ C、C++基于OS架构、CPU架构。通俗的举个例子，32位系统上的程
 
 
 
-![Imgur](https://i.imgur.com/IF5dQab.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jas114vaj30k30fu44e.jpg)
 
 
 
@@ -78,7 +78,7 @@ JVM结构由四部分组成：
 
 
 
-![基于JDK6的运行内存分类](https://i.imgur.com/5QXoTnI.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jascu83nj30ex0bojs5.jpg)
 
 > 这张图是基于JDK6版本的运行内存的分类
 
@@ -138,7 +138,7 @@ JVM结构由四部分组成：
 
 
 
-![Imgur](https://i.imgur.com/zeJq512.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jasq7b2lj30ht09eq38.jpg)
 
 
 

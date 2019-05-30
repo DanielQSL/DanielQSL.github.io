@@ -44,21 +44,19 @@ Java 对象头一般占有两个机器码（在 32 位虚拟机中，1 个机器
 
 下图是Java对象头的存储结构（32位虚拟机）:
 
-![Imgur](https://i.imgur.com/eDesOCQ.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jawagze9j30fb01oglu.jpg)
 
 
 
 在运行期间，Mark Word里存储的数据会随着锁标志位的变化而变化。Mark Word可能变化为以下四种数据：
 
-![Imgur](https://i.imgur.com/9O87S1I.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jawtpfclj30mr05ogmp.jpg)
 
 
 
 在64位虚拟机下，Mark Word是64bit大小的，其存储结构如下表：
 
-![Imgur](https://i.imgur.com/efQh3xN.png)
-
-
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jaxd31cqj30k702r3z4.jpg)
 
 # 3 Monitor
 
@@ -109,7 +107,7 @@ Java 对象头一般占有两个机器码（在 32 位虚拟机中，1 个机器
 
 下图是偏向锁的获取和释放流程：
 
-![Imgur](https://i.imgur.com/kP95fre.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jay40xbtj30o00pfteq.jpg)
 
 
 
@@ -144,7 +142,7 @@ Java 对象头一般占有两个机器码（在 32 位虚拟机中，1 个机器
 
 下图是争夺锁导致的**锁膨胀**的流程图：
 
-![Imgur](https://i.imgur.com/CD3kdx7.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jayqao07j30nz0mewlq.jpg)
 
 
 
@@ -158,7 +156,7 @@ Java 对象头一般占有两个机器码（在 32 位虚拟机中，1 个机器
 
 ## 对比和总结
 
-![Imgur](https://i.imgur.com/BB4ktPh.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jaz8awnzj30gu0aftd5.jpg)
 
 
 

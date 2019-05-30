@@ -238,7 +238,7 @@ spring中在实例化对象的时候用到Strategy模式
 
 
 
-![Imgur](https://i.imgur.com/FeuD5mm.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jajspakaj30hu08hgpg.jpg)
 
 
 
@@ -262,7 +262,7 @@ JdbcTemplate中的execute方法
 
 
 
-![Imgur](https://i.imgur.com/xkdLzBq.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jakebhlvj30ml0d2jyf.jpg)
 
 
 
@@ -270,7 +270,7 @@ JdbcTemplate执行execute方法
 
 
 
-![Imgur](https://i.imgur.com/AwdbyK4.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jal195enj30mb0e6jwv.jpg)
 
 
 

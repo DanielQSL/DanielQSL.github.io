@@ -33,11 +33,11 @@ map.computeIfAbsent("AaAa",
 
 你会惊奇的发现这个程序一直处于Running状态，我们通过top -Hp [pid]命令查看到其中一个线程的CPU使用率接近100%，参考下图：
 
-![Imgur](https://i.imgur.com/qxqLDfd.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jatsbf5yj30fl08w41z.jpg)
 
 可以看到pid为31417的东东，我们再通过jstack -l [pid]命令查看到对应的线程为：
 
-![Imgur](https://i.imgur.com/GaiCXjX.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jau46853j30jd033aar.jpg)
 
 注意将nid=0x7ab9的16进制转为10进制就是31417。可以看到问题是发生在了computeIfAbsent方法中，我们将示例中的程序换成下面这段程序也会同样出现CPU 100%的Bug：
 

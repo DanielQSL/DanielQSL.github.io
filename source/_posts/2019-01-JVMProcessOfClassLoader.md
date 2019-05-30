@@ -44,7 +44,7 @@ tags:
 
 下图是类加载的详细步骤：
 
-![Imgur](https://i.imgur.com/aoTb4Pf.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jat6pgr9j30ls099wfg.jpg)
 
 
 ## 1.加载

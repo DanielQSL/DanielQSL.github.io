@@ -49,7 +49,7 @@ com.pansoft.zhangjg.testclone.Person@2f9ee1ac
 
 上面代码执行完成之后， 内存中的情景如下图所示：
 
-![Imgur](https://i.imgur.com/BvPJ9zW.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jaex526ij309f06mmxj.jpg)
 
 而下面的代码是真真正正的克隆了一个对象：
 
@@ -69,7 +69,7 @@ com.pansoft.zhangjg.testclone.Person@67f1fba0
 
 以上代码执行完成后， 内存中的情景如下图所示：
 
-![Imgur](https://i.imgur.com/CGRrqQI.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jaflpu1yj30ds05vq41.jpg)
 
 
 
@@ -115,7 +115,7 @@ public class Person implements Cloneable{
 
 深拷贝和浅拷贝的原理如下图所示：
 
-![Imgur](https://i.imgur.com/q9xebJH.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jag9k95yj30h70c9q75.jpg)
 
 下面通过代码进行验证。
 
@@ -290,7 +290,7 @@ body.head.face == body1.head.face : true
 
 内存结构图如下图所示：
 
-![Imgur](https://i.imgur.com/hegOVll.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jahrz7wjj30eq06xdfv.jpg)
 
 那么，对Body对象来说，算是这算是深拷贝吗？其实应该算是深拷贝，因为对Body对象内所引用的其他对象（目前只有Head）都进行了拷贝，也就是说两个独立的Body对象内的head引用已经指向了独立的两个Head对象。
 
@@ -335,7 +335,7 @@ body.head.face == body1.head.face : false
 
 这说名两个Body已经完全独立了，他们间接引用的face对象已经被拷贝，也就是引用了独立的Face对象。内存结构图如下：
 
-![Imgur](https://i.imgur.com/tEncrgr.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jai64fvpj30f207pwfo.jpg)
 
 依此类推，如果Face对象还引用了其他的对象， 比如说Mouth，如果不经过处理，Body对象拷贝之后还是会通过一级一级的引用，引用到同一个Mouth对象。同理， 如果要让Body在引用链上完全独立， 只能显式的让Mouth对象也被拷贝。
 
@@ -343,7 +343,7 @@ body.head.face == body1.head.face : false
 
 举例来说，如果被Head引用的Face类是第三方库中的类，并且没有实现Cloneable接口，那么在Face之后的所有对象都会被拷贝前后的两个Body对象共同引用。假设Face对象内部组合了Mouth对象，并且Mouth对象内部组合了Tooth对象， 内存结构如下图：
 
-![Imgur](https://i.imgur.com/wUOH0sj.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jaikyuw7j30lz07dgnx.jpg)
 
 
 

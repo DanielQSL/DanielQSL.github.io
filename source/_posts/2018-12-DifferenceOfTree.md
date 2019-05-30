@@ -22,7 +22,7 @@ tags:
 
 用一张图对比下“完全二叉树”和“满二叉树”：
 
-![Imgur](https://i.imgur.com/WkuPrbR.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb2uskfsj30b104zgmz.jpg)
 
 当我们用数组实现一个完全二叉树时，叶子节点可以按从上到下、从左到右的顺序依次添加到数组中，然后知道一个节点的位置，就可以轻松地算出它的**父节点**、**孩子节点**的位置。
 
@@ -50,7 +50,7 @@ tags:
 
 如下图所示： 
 
-![Imgur](https://i.imgur.com/zYCHfRq.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb34n37dj308a064dg6.jpg)
 
 
 
@@ -70,7 +70,7 @@ tags:
 
 但最差时候会是 O(n)，比如插入的元素是有序的，生成的二叉排序树就是一个链表，这种情况下，需要遍历全部元素才行（见下图 b）。
 
-![Imgur](https://i.imgur.com/fAmWHKT.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb3f95cbj30dz07awfx.jpg)
 
 
 
@@ -96,7 +96,7 @@ tags:
 
 以 12 为根节点，当添加 24 为它的右子树后，根节点的左右子树高度差为 1，这时还算平衡，这时再添加一个元素 28：
 
-![Imgur](https://i.imgur.com/hKaozAB.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb3pcxvsj308d08kwf1.jpg)
 
 这时根节点 12 觉得不平衡了，我左孩子一个都没有，右边都有俩了，超过了之前说的最大为 1，不行，给我调整！
 
@@ -104,19 +104,19 @@ tags:
 
 因为最后一个节点加到了右子树的右子树，就要想办法给右子树的左子树加点料，因此需要逆时针旋转，将 24 变成根节点，12 右旋成 24 的左子树，就变成了这样（有点丑哈哈）：
 
-![Imgur](https://i.imgur.com/vK6DgWs.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb3zzj3gj307z04ut90.jpg)
 
 这时又恢复了平衡，再添加 37 到 28 的右子树，还算平衡：
 
-![Imgur](https://i.imgur.com/XDgjokS.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb49abqpj30ae07e3zc.jpg)
 
 这时如果再添加一个 30，它就需要在 37 的左子树：
 
-![Imgur](https://i.imgur.com/eBMNjKC.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb4j733kj309q0abmyc.jpg)
 
 这时我们可以看到这个树又不平衡了，以 24 为根节点的树，明显右边太重，左边太稀，想要保持平衡就 24 得让位给 28，然后变成这样：
 
-![Imgur](https://i.imgur.com/wyb7YqC.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb4y3w5nj30a107wjsf.jpg)
 
 丑了点，但的确保持了平衡。
 

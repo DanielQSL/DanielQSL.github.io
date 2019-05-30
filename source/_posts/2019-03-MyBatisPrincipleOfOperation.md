@@ -126,7 +126,7 @@ public class Main {
 
 `Resources`是mybatis提供的一个加载资源文件的工具类。
 
-![Imgur](https://i.imgur.com/cKMO9Rk.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3javd4d79j30lw0qzqnl.jpg)
 
 我们只看getResourceAsStream方法:
 

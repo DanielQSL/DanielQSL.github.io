@@ -15,7 +15,7 @@ tags:
 
 在阿里巴巴Java开发手册中，有如下明确规定：
 
-![Imgur](https://i.imgur.com/nQM29Z8.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jaoqki7ej30kd01k3yw.jpg)
 
 那么，本文就围绕SimpleDateFormat的用法、原理等来深入分析下如何以正确的姿势使用它。
 
@@ -49,11 +49,11 @@ System.out.println(sdf.parse(dataStr));
 
 在使用SimpleDateFormat的时候，需要通过字母来描述时间元素，并组装成想要的日期和时间模式。常用的时间元素和字母的对应表如下：
 
-![Imgur](https://i.imgur.com/JRD7ZSq.png)￼
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jap4hrdaj30jd0eewju.jpg)￼
 
 模式字母通常是重复的，其数量确定其精确表示。如下表是常用的输出格式的表示方法。
 
-![Imgur](https://i.imgur.com/uDgi3Vr.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3japgwd4kj30k307bn0g.jpg)
 
 #### **输出不同时区的时间**
 
@@ -163,7 +163,7 @@ public class Main {
 
 在阿里巴巴Java开发手册的第一章第六节——并发处理中关于这一点也有明确说明：
 
-![Imgur](https://i.imgur.com/7XEp2XW.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3japw48pfj30kf05zta5.jpg)
 
 那么，接下来我们就来看下到底是为什么，以及该如何解决。
 
@@ -181,7 +181,7 @@ If multiple threads access a format concurrently, it must be synchronized extern
 
 我们跟一下SimpleDateFormat类中format方法的实现其实就能发现端倪。
 
-![Imgur](https://i.imgur.com/65ezJla.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jaqargplj30li0jv7el.jpg)
 
 ￼SimpleDateFormat中的format方法在执行过程中，会使用一个成员变量calendar来保存时间。这其实就是问题的关键。
 

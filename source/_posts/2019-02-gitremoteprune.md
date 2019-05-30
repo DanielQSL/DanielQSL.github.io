@@ -13,7 +13,7 @@ tags:
 
 在你经常使用的命令当中有一个git branch –r 用来查看远程的分支，包括本地和远程的。但是时间长了你会发现有些分支在远程其实早就被删除了，但是在你本地依然可以看见这些**被删除**的分支。
 
-![Imgur](https://i.imgur.com/6i8KoZ0.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb019khpj30ff03edfp.jpg)
 
 图中蓝色圈出来的就是本地显示，但是在远程服务器中不存在的分支。
 
@@ -23,7 +23,7 @@ tags:
 
 通过命令git remote show origin 来查看有关于origin的一些信息。
 
-![Imgur](https://i.imgur.com/G0B5JrW.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb0ev9azj30f806w0sw.jpg)
 
 可以看出这三个不存在的分支，git给出了一个建议，你可以通过`git remote prune origin  `移除这些不存在的分支。（也就是说你可以刷新本地仓库与远程仓库的保持这些改动的同步）
 
@@ -31,7 +31,7 @@ tags:
 
 此时再通过git branch –r来查看，这个在远程删除的分支在你本地仓库也将被删除。
 
-![Imgur](https://i.imgur.com/ORh978B.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3jb16hd4xj30du02ja9v.jpg)
 
 
 
