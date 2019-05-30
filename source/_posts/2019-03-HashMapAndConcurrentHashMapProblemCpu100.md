@@ -11,10 +11,6 @@ tags:
 
 
 
-> 转载自：https://blog.csdn.net/u013256816/article/details/84917112
-
-
-
 # 现象
 
 大家可能都听过JDK7中的HashMap在多线程环境下可能造成CPU 100%的现象，这个由于在扩容的时候put时产生了死链，由此会在get时造成了CPU 100%。这个问题在JDK8中的HashMap获得了解决。其实JDK7中的HashMap在多线程环境下不止只有CPU 100%这一共怪异现象，它还可能造成插入的数据丢失，有兴趣的读者可以自行了解下。
@@ -126,3 +122,7 @@ private static String waitAndGet(){
 # 解决
 
 怎么规避这个问题呢？只要不在递归中使用computeIfAbsent方法就好啦，或者降级用可爱的分段锁，或者升级JDK9~
+
+
+
+> 转载自：https://blog.csdn.net/u013256816/article/details/84917112

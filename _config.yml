@@ -76,6 +76,12 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: next
 
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: false
+  total_time: false
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy: 
