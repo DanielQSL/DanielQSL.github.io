@@ -39,7 +39,7 @@ tags:
 
 下图所示是 ClassLoader 加载一个 `.class` 文件到 JVM 时需要经过的步骤：
 
-![Imgur](https://i.imgur.com/LFd9D4Z.png)
+![](http://ww1.sinaimg.cn/large/007P9bxgly1g3k894tl6jj30gr053aa0.jpg)
 
 
 下图是类加载的详细步骤：
