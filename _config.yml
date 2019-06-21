@@ -88,3 +88,9 @@ deploy:
   type: git
   repository: git@github.com:DanielQSL/DanielQSL.github.io.git
   branch: master
+
+#Sitemap
+sitemap:
+    path: sitemap.xml
+baidusitemap:
+    path: baidusitemap.xml
