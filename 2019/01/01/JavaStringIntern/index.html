@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言我们先来看下面这段程序：（基于JDK1.8） 123456String str1 &#x3D; &quot;qsl&quot;;String str2 &#x3D; new String(&quot;qsl&quot;);String str3 &#x3D; new String(&quot;qsl&quot;).intern();System.out.println(str1 &#x3D;&#x3D; str2);&#x2F;&#x2F;falseSystem.out.println(str1 &#x3D;&#x3D; str3);&#x2F;&#x2F;t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="和String有关的那些事儿-intern方法">
+<meta property="og:url" content="http://yoursite.com/2019/01/01/JavaStringIntern/index.html">
+<meta property="og:site_name" content="DanielQSL&#39;s Blog">
+<meta property="og:description" content="前言我们先来看下面这段程序：（基于JDK1.8） 123456String str1 &#x3D; &quot;qsl&quot;;String str2 &#x3D; new String(&quot;qsl&quot;);String str3 &#x3D; new String(&quot;qsl&quot;).intern();System.out.println(str1 &#x3D;&#x3D; str2);&#x2F;&#x2F;falseSystem.out.println(str1 &#x3D;&#x3D; str3);&#x2F;&#x2F;t">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-01T08:56:50.000Z">
+<meta property="article:modified_time" content="2020-06-16T05:59:35.228Z">
+<meta property="article:author" content="DanielQSL">
+<meta property="article:tag" content="Java基础">
+<meta property="article:tag" content="String">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/01/01/JavaStringIntern/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>和String有关的那些事儿-intern方法 | DanielQSL's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">DanielQSL's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习永远不晚</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/01/JavaStringIntern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DanielQSL">
+      <meta itemprop="description" content="DanielQSL的博客">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="DanielQSL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          和String有关的那些事儿-intern方法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-01-01 16:56:50" itemprop="dateCreated datePublished" datetime="2019-01-01T16:56:50+08:00">2019-01-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-16 13:59:35" itemprop="dateModified" datetime="2020-06-16T13:59:35+08:00">2020-06-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Java基础</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我们先来看下面这段程序：（基于JDK1.8）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">String str1 = <span class="string">"qsl"</span>;</span><br><span class="line">String str2 = <span class="keyword">new</span> String(<span class="string">"qsl"</span>);</span><br><span class="line">String str3 = <span class="keyword">new</span> String(<span class="string">"qsl"</span>).intern();</span><br><span class="line"></span><br><span class="line">System.out.println(str1 == str2);<span class="comment">//false</span></span><br><span class="line">System.out.println(str1 == str3);<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="intern-方法的定义"><a href="#intern-方法的定义" class="headerlink" title="intern()方法的定义"></a>intern()方法的定义</h2><blockquote>
+<p>Returns a canonical representation for the string object. A pool of strings, initially empty, is maintained privately by the class String. When the intern method is invoked, if the pool already contains a string equal to this String object as determined by the equals(Object) method, then the string from the pool is returned. Otherwise, this String object is added to the pool and a reference to this String object is returned. It follows that for any two strings s and t, s.intern() == t.intern() is true if and only if s.equals(t) is true. All literal strings and string-valued constant expressions are interned. String literals are defined in section 3.10.5 of the The Java? Language Specification.</p>
+</blockquote>
+<p>上面是jdk源码对intern方法的详细解释。简单来说就是intern方法用来返回常量池中的某字符串，如果常量池中已经存在该字符串，则直接返回常量池中该对象的引用。否则，在常量池中加入该对象，然后返回引用。</p>
+<p><strong>注意</strong>：在JDK1.7之前，字符串常量池存储在方法区的永久代中。而在JDK1.8之后，字符串常量池被移到了堆中。</p>
+<h1 id="运行时常量池的动态扩展"><a href="#运行时常量池的动态扩展" class="headerlink" title="运行时常量池的动态扩展"></a>运行时常量池的动态扩展</h1><h2 id="字符串常量池"><a href="#字符串常量池" class="headerlink" title="字符串常量池"></a>字符串常量池</h2><p>JVM为了提高性能和减少内存开销，在实例化字符串常量的时候进行了一些优化。为了减少在JVM中创建的字符串的数量，字符串类维护了一个字符串常量池。</p>
+<p>在JVM运行时区域的方法区中，有一块区域是运行时常量池，主要用来存储<strong>编译期</strong>生成的各种<strong>字面量</strong>和<strong>符号引用</strong>。</p>
+<p>如果看过Java代码反编译后结果的同学可能知道，Java代码在编译之后，文件结构中包含一块Constant Pool。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    String str = <span class="string">"qsl"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>经过编译以后，常量池中的内容为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Constant pool:</span><br><span class="line">   #1 &#x3D; Methodref          #4.#20         &#x2F;&#x2F; java&#x2F;lang&#x2F;Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">   #2 &#x3D; String             #21            &#x2F;&#x2F; qsl</span><br><span class="line">   #3 &#x3D; Class              #22            &#x2F;&#x2F; com&#x2F;ccmall&#x2F;learningtest&#x2F;string&#x2F;StringDemo1</span><br><span class="line">   #4 &#x3D; Class              #23            &#x2F;&#x2F; java&#x2F;lang&#x2F;Object</span><br><span class="line">   #5 &#x3D; Utf8               &lt;init&gt;</span><br><span class="line">   #6 &#x3D; Utf8               ()V</span><br><span class="line">   #7 &#x3D; Utf8               Code</span><br><span class="line">   #8 &#x3D; Utf8               LineNumberTable</span><br><span class="line">   #9 &#x3D; Utf8               LocalVariableTable</span><br><span class="line">  #10 &#x3D; Utf8               this</span><br><span class="line">  #11 &#x3D; Utf8               Lcom&#x2F;ccmall&#x2F;learningtest&#x2F;string&#x2F;StringDemo1;</span><br><span class="line">  #12 &#x3D; Utf8               main</span><br><span class="line">  #13 &#x3D; Utf8               ([Ljava&#x2F;lang&#x2F;String;)V</span><br><span class="line">  #14 &#x3D; Utf8               args</span><br><span class="line">  #15 &#x3D; Utf8               [Ljava&#x2F;lang&#x2F;String;</span><br><span class="line">  #16 &#x3D; Utf8               str</span><br><span class="line">  #17 &#x3D; Utf8               Ljava&#x2F;lang&#x2F;String;</span><br><span class="line">  #18 &#x3D; Utf8               SourceFile</span><br><span class="line">  #19 &#x3D; Utf8               StringDemo1.java</span><br><span class="line">  #20 &#x3D; NameAndType        #5:#6          &#x2F;&#x2F; &quot;&lt;init&gt;&quot;:()V</span><br><span class="line">  #21 &#x3D; Utf8               qsl</span><br><span class="line">  #22 &#x3D; Utf8               com&#x2F;ccmall&#x2F;learningtest&#x2F;string&#x2F;StringDemo1</span><br><span class="line">  #23 &#x3D; Utf8               java&#x2F;lang&#x2F;Object</span><br></pre></td></tr></table></figure>
+
+<p>在上面的几个常量中，<code>str</code>是<strong>符号引用</strong>，而字面量<code>qsl</code>会被加入到常量池中，然后在类加载的过程中，这两个常量都会进入常量池。</p>
+<h2 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h2><p><strong>编译期</strong>生成的各种<strong>字面量</strong>和<strong>符号引用</strong>是运行时常量池中比较重要的一部分来源，但是并不是全部。那么还有一种情况，可以在<strong>运行期像运行时常量池中增加常量</strong>。那就是<code>String</code>的<code>intern</code>方法。</p>
+<p>当一个<code>String</code>实例调用<code>intern()</code>方法时，JVM会查找常量池中是否有相同Unicode的字符串常量，如果有，则返回其的引用，如果没有，则在常量池中增加一个Unicode等于该字符串并返回它的引用。</p>
+<p><strong>intern()有两个作用，第一个是将字符串字面量放入常量池（如果池没有的话），第二个是返回这个常量的引用。</strong></p>
+<p>我们回过头看本篇文章开头的例子：</p>
+<p>你可以简单的理解为<code>String s1 = &quot;qsl&quot;;</code>和<code>String s3 = new String(&quot;qsl&quot;).intern();</code>做的事情是一样的（但实际有些区别，这里暂不展开）。都是定义一个字符串对象，然后将其字符串字面量保存在常量池中，并把这个字面量的引用返回给定义好的对象引用。</p>
+<p>对于<code>String s3 = new String(&quot;qsl&quot;).intern();</code>，在不调<code>intern</code>情况，s3指向的是JVM在堆中创建的那个对象的引用的。但是当执行了<code>intern</code>方法时，s3将指向字符串常量池中的那个字符串常量。</p>
+<p>由于s1和s3都是字符串常量池中的字面量的引用，所以s1==s3。但是，s2的引用是堆中的对象，所以s2!=s1。</p>
+<h2 id="intern的正确用法"><a href="#intern的正确用法" class="headerlink" title="intern的正确用法"></a>intern的正确用法</h2><p>不知道，你有没有发现，在<code>String s3 = new String(&quot;qsl&quot;).intern();</code>中，其实<code>intern</code>是多余的？</p>
+<p>因为就算不用<code>intern</code>，Hollis作为一个字面量也会被加载到Class文件的常量池，进而加入到运行时常量池中，为啥还要多此一举呢？到底什么场景下才会用到intern呢?</p>
+<p>我们来看下以下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String s1 = <span class="string">"daniel"</span>;</span><br><span class="line">String s2 = <span class="string">"qsl"</span>;</span><br><span class="line">String s3 = s1 + s2;</span><br><span class="line">String s4 = <span class="string">"daniel"</span> + <span class="string">"qsl"</span>;</span><br></pre></td></tr></table></figure>
+<p>在经过反编译后，得到代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String s1 = <span class="string">"daniel"</span>;</span><br><span class="line">String s2 = <span class="string">"qsl"</span>;</span><br><span class="line">String s3 = (<span class="keyword">new</span> StringBuilder()).append(s1).append(s2).toString();</span><br><span class="line">String s4 = <span class="string">"danielqsl"</span>;</span><br></pre></td></tr></table></figure>
+<p>常量池要保存的是<strong>已确定</strong>的字面量值。也就是说，对于字符串的拼接，纯字面量和字面量的拼接，会把拼接结果作为常量保存到字符串。</p>
+<p>如果在字符串拼接中，有一个参数是非字面量，而是一个变量的话，整个拼接操作会被编译成<code>StringBuilder.append</code>，这种情况编译器是无法知道其确定值的。只有在运行期才能确定。</p>
+<p>那么，有了这个特性了，<code>intern</code>就有用武之地了。<strong>那就是很多时候，我们在程序中用到的字符串是只有在运行期才能确定的，在编译期是无法确定的，那么也就没办法在编译期被加入到常量池中。</strong></p>
+<p>这时候，对于那种可能经常使用的字符串，使用<code>intern</code>进行定义，每次JVM运行到这段代码的时候，就会直接把常量池中该字面值的引用返回，这样就可以减少大量字符串对象的创建了。</p>
+<p>如一美团点评团队的《深入解析String#intern》文中举的一个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX = <span class="number">1000</span> * <span class="number">10000</span>;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> String[] arr = <span class="keyword">new</span> String[MAX];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    Integer[] DB_DATA = <span class="keyword">new</span> Integer[<span class="number">10</span>];</span><br><span class="line">    Random random = <span class="keyword">new</span> Random(<span class="number">10</span> * <span class="number">10000</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; DB_DATA.length; i++) &#123;</span><br><span class="line">        DB_DATA[i] = random.nextInt();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAX; i++) &#123;</span><br><span class="line">         <span class="comment">//arr[i] = new String(String.valueOf(DB_DATA[i % DB_DATA.length]));</span></span><br><span class="line">         arr[i] = <span class="keyword">new</span> String(String.valueOf(DB_DATA[i % DB_DATA.length])).intern();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在以上代码中，我们明确的知道，会有很多重复的相同的字符串产生，但是这些字符串的值都是只有在运行期才能确定的。所以，只能我们通过<code>intern</code>显示的将其加入常量池，这样可以减少很多字符串的重复创建。</p>
+<p>上述代码经测试，加了<code>intern</code> ，程序效率会提升一半。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>new String 所谓的“如果有的话就直接引用”，指的是Java堆中创建的String对象中包含的字符串字面量直接引用字符串池中的字面量对象。也就是说，还是要在堆里面创建对象的。</p>
+<p>而intern中说的“如果有的话就直接返回其引用”，指的是会把字面量对象的引用直接返回给定义的对象。这个过程是不会在Java堆中再创建一个String对象的。</p>
+<p><code>intern</code>的主要应用场景在运行时，当我们知道会有大量重复字符串产生，可以使用<code>intern</code>将其加入常量池，减少字符串的重复创建。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag"># Java基础</a>
+              <a href="/tags/String/" rel="tag"># String</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/01/JavaString/" rel="prev" title="和String有关的那些事儿">
+      <i class="fa fa-chevron-left"></i> 和String有关的那些事儿
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/01/01/JVMProcessOfClassLoader/" rel="next" title="走进JVM-类加载过程">
+      走进JVM-类加载过程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#intern-方法的定义"><span class="nav-number">1.1.</span> <span class="nav-text">intern()方法的定义</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行时常量池的动态扩展"><span class="nav-number">2.</span> <span class="nav-text">运行时常量池的动态扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串常量池"><span class="nav-number">2.1.</span> <span class="nav-text">字符串常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时常量池"><span class="nav-number">2.2.</span> <span class="nav-text">运行时常量池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#intern的正确用法"><span class="nav-number">2.3.</span> <span class="nav-text">intern的正确用法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">DanielQSL</p>
+  <div class="site-description" itemprop="description">DanielQSL的博客</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/DanielQSL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;DanielQSL" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qiansl0316@gmail.com" title="E-Mail → mailto:qiansl0316@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DanielQSL</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
