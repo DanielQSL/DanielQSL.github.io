@@ -1,1 +1,0 @@
-# DanielQSL.github.io
